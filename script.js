@@ -7,3 +7,15 @@ const diameter = 0.10; // Durchmesser des Balls 10cm = 0.10 m
 const area = Math.PI * 0.05 ** 2; // Querschnittsfläche 
 const mass = 0.2;      // Masse des Balls 200g = 0.2 kg
 const launchHeight = 2.5; // abwurfhöhe in metern
+
+// p5.js createCanvas() 
+// https://p5js.org/reference/p5/createCanvas/
+window.setup = function() {
+  let cnv = createCanvas(800, 400);
+  cnv.parent('canvas-container');
+  background(180); // hintergrundfarbe
+};
+
+window.draw = function() {
+  // ...
+};
