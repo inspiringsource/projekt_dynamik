@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Initial HTML Page</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projekt Dynamik</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Projekt Dynamik</h1>
-    </header>
-    <main>
-        <p>Das ist eine Startseite.</p>
-    </main>
-    <footer>
-        <p>&copy; 2025 Physik Projekt</p>
-    </footer>
+  <header>
+    <h1>Projekt Dynamik</h1>
+  </header>
+  <main>
+
+    <div>
+      <label for="angleInput">Abwurfwinkel in Grad:</label><br />
+      <input type="number" id="angleInput" min="5" max="85" value="45" />
+    </div>
+    <div>
+      <label for="velocityInput">Anfangsgeschwindigkeit in m/s:</label><br />
+      <input type="number" id="velocityInput" min="5" max="50" value="20" step="0.1" />
+    </div>
+
+    <div id="canvas-container"></div>
+  </main>
+  <footer>
+    <p>2025 Avi Bobrovsky</p>
+  </footer>
+</body>
 </html>
