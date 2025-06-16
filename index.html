@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projekt Dynamik</title>
+  <title>Projekt Dynamik - Schritt 5</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
   <script src="script.js" defer></script>
@@ -13,7 +13,6 @@
     <h1>Projekt Dynamik</h1>
   </header>
   <main>
-
     <div>
       <label for="angleInput">Abwurfwinkel in Grad:</label><br />
       <input type="number" id="angleInput" min="5" max="85" value="45" />
@@ -22,7 +21,10 @@
       <label for="velocityInput">Anfangsgeschwindigkeit in m/s:</label><br />
       <input type="number" id="velocityInput" min="5" max="50" value="20" step="0.1" />
     </div>
-
+    <div>
+      <input type="checkbox" id="dragToggle" checked />
+      <label for="dragToggle">Luftwiderstand anzeigen</label>
+    </div>
     <div id="canvas-container"></div>
   </main>
   <footer>
