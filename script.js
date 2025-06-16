@@ -67,7 +67,7 @@ function draw() {
  */
 function drawProjectileTrajectory(withDrag) {
   // Grad in Bogenmass lösung von https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/cos
-  // https://github.com/Louis-Finegan/Basic-Projectile-Simulator-Javascript/tree/master
+  // https://github.com/Louis-Finegan/Basic-Projectile-Simulator-Javascript
   // https://natureofcode.com/vectors/
 
   const rad = angleDeg * Math.PI / 180;
