@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projekt Dynamik - Schritt 5</title>
+  <title>Projekt Dynamik: eine Projektilsimulation</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- p5.js -->
   <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <!-- ./script.js Javascript-Code -->
   <script src="script.js" defer></script>
 </head>
 <body>
   <header>
-    <h1>Projekt Dynamik</h1>
+    <h1>Projekt Dynamik: eine Projektilsimulation</h1>
   </header>
   <main>
     <div>
       <label for="angleInput">Abwurfwinkel in Grad:</label><br />
-      <input type="number" id="angleInput" min="5" max="85" value="45" />
+      <input type="number" id="angleInput" min="5" max="89" value="45" />
     </div>
     <div>
       <label for="velocityInput">Anfangsgeschwindigkeit in m/s:</label><br />
@@ -26,9 +28,38 @@
       <label for="dragToggle">Luftwiderstand anzeigen</label>
     </div>
     <div id="canvas-container"></div>
+    <section>
+      <h3>Simulationsergebnisse</h3>
+      <table id="result-table" border="1">
+        <thead>
+          <tr>
+            <th>Methode</th>
+            <th>Reichweite [m]</th>
+            <th>Max. Höhe [m]</th>
+            <th>Flugzeit [s]</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Ergebnisse werden per JS ergänzt -->
+        </tbody>
+      </table>
+    </section>
+    <section>
+<!-- ich werde diesen Abschnitt in die Readme dann verschieben  -->
+        <h3>Referenzen:</h3>
+        <ul>
+          <li><a href="https://en.wikipedia.org/wiki/Projectile_motion" target="_blank">Wikipedia: Projectile Motion</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Euler_method" target="_blank">Wikipedia: Euler Method</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods" target="_blank">Wikipedia: Runge-Kutta Methods</a></li>
+          <li><a href="https://stackoverflow.com/questions/23104582/scaling-an-image-to-fit-on-canvas" target="_blank">Stack Overflow: Scaling Image/Projectile to Fit Canvas</a></li>
+          <li><a href="https://natureofcode.com/vectors/" target="_blank">Nature of Code: Vectors</a></li>
+          <li><a href="https://github.com/Louis-Finegan/Basic-Projectile-Simulator-Javascript" target="_blank">Basic Projectile Simulator (GitHub)</a></li>
+        </ul>
+
+    </section>
   </main>
   <footer>
-    <p>2025 Avi Bobrovsky</p>
+    <p>&copy; 2025 Avi Bobrovsky</p>
   </footer>
 </body>
 </html>
