@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projekt Dynamik: eine Projektilsimulation</title>
   <link rel="stylesheet" href="styles.css" />
+  <!-- p5.js Bibliothek zur grafischen Darstellung -->
   <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <!-- MathJax für Latex (Gleichungen darzustellen)  -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -17,14 +20,16 @@
          <!--
           Wir müssen Formeln im Text einfügen, deshalb wollen wir wahrscheinlich LaTeX verwenden:
           https://stackoverflow.com/questions/17190329/how-to-embed-latex-formulas-in-html
-
-          Außerdem wollen wir Codeschnipsel einfügen:
-          https://latex.js.org/usage.html#in-the-browser
+          
+          LaTeX Mathematiksymbole
+          https://www.math.uci.edu/~xiangwen/pdf/LaTeX-Math-Symbols.pdf
 
           Wir brauchen auch Codeausschnitte in HTML einzufügen:
           https://www.codiga.io/blog/display-code-snippets-in-html/
           -->
     <div>
+      <p>inline math: \( x_{j+1} = x_j + v_j \Delta t \)</p>
+      <p>oder mit $$ F_{R} = \frac{1}{2} \rho C_d A v^2 $$</p>
       <label for="angleInput">Abwurfwinkel in Grad:</label><br />
       <input type="number" id="angleInput" min="5" max="89" value="45" />
     </div>
