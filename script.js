@@ -1,22 +1,22 @@
 // Simulationsparameter
 const g = 9.81;        // Schwerefeld der Erde
-const rho = 1.225;     // Luftdichte
+const rho = 1.225;     // Luftdichte (kg/m³)
 const Cd = 0.47;       // Luftwiderstandsbeiwert
 const diameter = 0.10; // Durchmesser des Balls 10cm = 0.10 m
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/PI
-const area = Math.PI * 0.05 ** 2; // Querschnittsfläche
+const area = Math.PI * 0.05 ** 2; // Querschnittsfläche (r=0.05m)
 const mass = 0.2;      // Masse des Balls 200g = 0.2 kg
 const launchHeight = 2.5; // Abwurfhöhe in Metern
 
-// Testwerte (Standardwerte)
+// Standardwerte
 let angleDeg  = 45; // Abwurfwinkel in Grad
-let velocity = 20; // Abwurfgeschwindigkeit in m/s
+let velocity = 20;  // Abwurfgeschwindigkeit in m/s
 
 // Variablen für die Eingabefelder
 let angleInput, velocityInput, dragToggle;
 
-// Ergebnisse für Tabelle
+// Ergebnisse für Tabelle und Zusammenfassung
 let trajectoryRows = [];
 let optimalResult = null;
 
@@ -56,27 +56,22 @@ function draw() {
   stroke(150);
   line(0, height - 25, width, height - 25);
 
-  // 1. Ohne Luftwiderstand (analytisch, blau) 
+  // ---- Alle Trajektorien für gemeinsame Skalierung berechnen ----
+  // 1. Analytisch (ohne Luftwiderstand, blau)
   const analytic = computeAnalyticTrajectory(angleDeg, velocity);
-  drawPath(analytic.trajectory, color(30, 144, 255));
 
-  // 2. Mit Luftwiderstand (Euler-Verfahren, rot/orange) 
-  const { optimalAngle, maxRange, steps } = findOptimalAngleEuler(velocity);
-
-  // Für die Tabelle
-  trajectoryRows = [];
-
-  // Alle 5 numerischen Trajektorien (zwei vor, optimal, zwei nach)
-  const delta = 3; // Schrittweite in Grad
+  // 2. Numerisch (mit Luftwiderstand, verschiedene Winkel)
+  const { optimalAngle, maxRange: optMaxRange } = findOptimalAngleEuler(velocity);
+  const delta = 3; // Schrittweite in Grad (zwei darunter, optimal, zwei darüber)
   let angles = [
-    optimalAngle - 2 * delta,
+    // optimalAngle - 2 * delta,
     optimalAngle - delta,
     optimalAngle,
     optimalAngle + delta,
-    optimalAngle + 2 * delta
+    // optimalAngle + 2 * delta
   ];
 
-  // Falls der gewählte Winkel NICHT in den 5, dann ersetzen wir den nahesten mit dem gewählten
+  // Falls gewählter Winkel nicht dabei, ersetze den nächsten durch gewählten Winkel
   if (!angles.some(a => Math.abs(a - angleDeg) < 1e-3)) {
     let closest = angles.reduce((a, b) =>
       Math.abs(a - angleDeg) < Math.abs(b - angleDeg) ? a : b
@@ -84,31 +79,48 @@ function draw() {
     angles[angles.indexOf(closest)] = angleDeg;
   }
 
-  // Numerische Flüge berechnen und zeichnen
-  let chosenIdx = -1, optimalIdx = -1;
-  angles.forEach((a, i) => {
-    const traj = computeNumericTrajectory(a, velocity);
-    let col = (Math.abs(a - optimalAngle) < 1e-3)
-      ? color(255, 0, 0)
-      : (Math.abs(a - angleDeg) < 1e-3)
-        ? color(0, 0, 255)
-        : color(255, 140, 0);
-    drawPath(traj.trajectory, col);
+  // Alle Trajektorien sammeln
+  let allTrajectories = [analytic.trajectory];
+  let numericTrajs = angles.map(a => computeNumericTrajectory(a, velocity));
+  numericTrajs.forEach(t => allTrajectories.push(t.trajectory));
 
-    if (Math.abs(a - angleDeg) < 1e-3) chosenIdx = i;
-    if (Math.abs(a - optimalAngle) < 1e-3) optimalIdx = i;
+  // Maximale Werte (für gemeinsame Skalierung)
+  let maxRange = 0, maxHeight = 0;
+  allTrajectories.forEach(traj => {
+    traj.forEach(pt => {
+      if (pt.x > maxRange) maxRange = pt.x;
+      if (pt.y > maxHeight) maxHeight = pt.y;
+    });
+  });
+
+  // ---- Trajektorien zeichnen ohne Luftwiderstand ----
+  drawPath(analytic.trajectory, color(130), maxRange, maxHeight); // Grau
+
+  // Tabelle vorbereiten
+  trajectoryRows = [];
+
+  // Numerische Flüge
+  angles.forEach((a, i) => {
+    const traj = numericTrajs[i];
+    let isOptimal = Math.abs(a - optimalAngle) < 1e-3;
+    let isChosen = Math.abs(a - angleDeg) < 1e-3;
+    let col;
+    if (isChosen) col = color(0, 0, 255);       // Blau: Gewählt
+    else if (isOptimal) col = color(255, 0, 0); // Rot: Optimal
+    else col = color(0, 180, 0);                // Grün: Sonstige numerische Fälle
+    drawPath(traj.trajectory, col, maxRange, maxHeight);
 
     trajectoryRows.push({
       methode: 'Mit Luftwiderstand',
       v: velocity,
       alpha: a,
       reichweite: traj.range,
-      isOptimal: Math.abs(a - optimalAngle) < 1e-3,
-      isChosen: Math.abs(a - angleDeg) < 1e-3
+      isOptimal: isOptimal,
+      isChosen: isChosen
     });
   });
 
-  // Tabelle: ohne Luftwiderstand 
+  // Analytischer Wert (immer oben in der Tabelle)
   trajectoryRows.unshift({
     methode: 'Ohne Luftwiderstand',
     v: velocity,
@@ -118,18 +130,17 @@ function draw() {
     isChosen: false
   });
 
-  // Zusammenfassungszeile oben speichern 
+  // Zusammenfassungszeile
   optimalResult = {
     v: velocity,
     optimalAngle: optimalAngle,
-    maxRange: maxRange
+    maxRange: optMaxRange
   };
 
   updateResultTable();
 }
 
-// ohne Luftwiderstand.
-
+// Analytische Lösung ohne Luftwiderstand (Formeln siehe: https://github.com/Louis-Finegan/Basic-Projectile-Simulator-Javascript)
 function computeAnalyticTrajectory(angle, v) {
   const rad = angle * Math.PI / 180;
   const v0x = v * Math.cos(rad);
@@ -145,9 +156,7 @@ function computeAnalyticTrajectory(angle, v) {
   return { trajectory: traj, range: maxRange };
 }
 
-/**
- * Numerische Lösung mit Luftwiderstand (Euler).
- */
+// Numerische Lösung mit Luftwiderstand (Euler-Verfahren, siehe: https://en.wikipedia.org/wiki/Euler_method)
 function computeNumericTrajectory(angle, v) {
   const rad = angle * Math.PI / 180;
   const v0x = v * Math.cos(rad);
@@ -172,10 +181,8 @@ function computeNumericTrajectory(angle, v) {
   return { trajectory: traj, range: x };
 }
 
-/**
- * optimalen Winkel für maximale Reichweite (mit Luftwiderstand)
- * https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
- */
+// Suche optimalen Winkel für maximale Reichweite (mit Luftwiderstand)
+// Siehe: https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
 function findOptimalAngleEuler(v) {
   let maxRange = 0, optimalAngle = 45, steps = [];
   for (let a = 5; a <= 89; a += 1) {
@@ -189,15 +196,17 @@ function findOptimalAngleEuler(v) {
   return { optimalAngle, maxRange, steps };
 }
 
-// auf Canvas zeichnen
-function drawPath(trajectory, col) {
+// Pfad auf das Canvas zeichnen (gemeinsame Skalierung: https://stackoverflow.com/questions/23104582/scaling-an-image-to-fit-on-canvas)
+function drawPath(trajectory, col, maxRange, maxHeight) {
   stroke(col);
   noFill();
   beginShape();
+  textSize(14);
+  textAlign(RIGHT, BOTTOM);
+  text("x [m]", width - 10, height - 5);
+  textAlign(LEFT, TOP);
+  text("y [m]", 30, 10); 
   trajectory.forEach(({x, y}) => {
-    // Skalierung (siehe: https://stackoverflow.com/questions/23104582/scaling-an-image-to-fit-on-canvas)
-    let maxRange = Math.max(...trajectory.map(p => p.x));
-    let maxHeight = Math.max(...trajectory.map(p => p.y));
     let xScale = (width - 40) / (maxRange || 1);
     let yScale = (height - 40) / (maxHeight + 1e-6);
     let px = 20 + x * xScale;
@@ -207,11 +216,9 @@ function drawPath(trajectory, col) {
   endShape();
 }
 
-/**
- * Ergebnistabelle aktualisieren
- * Methoden und Werte in Deutsch.
- * https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement
- */
+// Tabelle und Zusammenfassungszeile aktualisieren
+// Methoden und Werte in Deutsch
+// https://developer.mozilla.org/en-US/docs/Web/API/HTMLTableElement
 function updateResultTable() {
   const summary = document.getElementById("summary-line");
   if (summary && optimalResult) {
