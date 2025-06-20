@@ -18,17 +18,19 @@
   <main>
         <!-- TODO: -->
          <!--
-          Wir müssen Formeln im Text einfügen, deshalb wollen wir wahrscheinlich LaTeX verwenden:
-          https://stackoverflow.com/questions/17190329/how-to-embed-latex-formulas-in-html
-          
           LaTeX Mathematiksymbole
           https://www.math.uci.edu/~xiangwen/pdf/LaTeX-Math-Symbols.pdf
+          
+          // für die Darstellung von LaTeX formeln
+          https://www.mathcha.io/editor
+          // und
+          https://www.codecogs.com/latex/eqneditor.php
 
           Wir brauchen auch Codeausschnitte in HTML einzufügen:
           https://www.codiga.io/blog/display-code-snippets-in-html/
           -->
     <div>
-      <p>inline math: \( x_{j+1} = x_j + v_j \Delta t \)</p>
+      <p>inline math: \( \dot{x}_{i} =a_{i} x_{i'} -( d+a_{i0} +a_{i1}) x_{i} +rx_{i}( f_{i} -\phi ) \)</p>
       <p>oder mit $$ F_{R} = \frac{1}{2} \rho C_d A v^2 $$</p>
       <label for="angleInput">Abwurfwinkel in Grad:</label><br />
       <input type="number" id="angleInput" min="5" max="89" value="45" />
