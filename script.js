@@ -90,8 +90,8 @@ function computeNumericTrajectory(angle, v, dt = 0.01) {
 // "Normal": dt = 0.01
 function findOptimalAngleEulerDt01(v) {
   let maxRange = 0, optimalAngle = 45;
-  for (let a = 30; a <= 50; a += 0.1) {
-    let result = computeNumericTrajectory(a, v, 0.01);
+  for (let a = 30; a <= 50; a += 0.01) {
+    let result = computeNumericTrajectory(a, v, 0.001);
     if (result.range > maxRange) {
       maxRange = result.range;
       optimalAngle = a;
