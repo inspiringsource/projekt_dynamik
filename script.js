@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const layout = {
-    title: 'Maximale Reichweite und Optimaler Winkel vs. Anfangsgeschwindigkeit',
+    title: 'Maximale Reichweite und Winkel vs. Anfangsgeschwindigkeit',
     xaxis: { title: 'Anfangsgeschwindigkeit V [m/s]' },
     yaxis: { title: 'Maximale Reichweite [m]', side: 'left', showgrid: true },
     yaxis2: {
