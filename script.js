@@ -60,6 +60,47 @@ function updateParams() {
   updateSummaryTableFine();
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  // Daten aus deiner Tabelle (Schrittweite: 0.01 Grad und dt = 0.001)
+  const velocities = [10, 20, 30, 40, 50];
+  const angles =    [38.16, 40.67, 39.53, 38.15, 36.67];
+  const ranges =    [11.47, 32.54, 55.52, 76.45, 94.65];
+
+  const trace1 = {
+    x: velocities,
+    y: ranges,
+    name: 'Maximale Reichweite [m]',
+    yaxis: 'y1',
+    mode: 'markers+lines',
+    marker: { color: 'blue', size: 8 },
+    line: { dash: 'solid' }
+  };
+
+  const trace2 = {
+    x: velocities,
+    y: angles,
+    name: 'Optimaler Winkel alpha',
+    yaxis: 'y2',
+    mode: 'markers+lines',
+    marker: { color: 'red', size: 8 },
+    line: { dash: 'dot' }
+  };
+
+  const layout = {
+    title: 'Maximale Reichweite und Winkel',
+    xaxis: { title: 'Anfangsgeschwindigkeit V [m/s]' },
+    yaxis: { title: 'Maximale Reichweite [m]', side: 'left', showgrid: true },
+    yaxis2: {
+      title: 'Optimaler Winkel alpha',
+      overlaying: 'y',
+      side: 'right',
+      showgrid: false
+    },
+    legend: { x: 0.1, y: 1.1, orientation: 'h' }
+  };
+
+  Plotly.newPlot('scatter-plot', [trace1, trace2], layout);
+});
 
 
 // Numerische Lösung mit Luftwiderstand (Euler-Verfahren)
