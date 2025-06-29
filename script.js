@@ -61,10 +61,9 @@ function updateParams() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Daten aus deiner Tabelle (Schrittweite: 0.01 Grad und dt = 0.001)
-  const velocities = [10, 20, 30, 40, 50];
-  const angles =    [38.16, 40.67, 39.53, 38.15, 36.67];
-  const ranges =    [11.47, 32.54, 55.52, 76.45, 94.65];
+  const velocities = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+  const angles     = [30.26, 38.16, 40.38, 40.67, 40.09, 39.53, 38.95, 38.15, 37.37, 36.67];
+  const ranges     = [4.28, 11.47, 21.30, 32.54, 44.15, 55.52, 66.32, 76.45, 85.89, 94.65];
 
   const trace1 = {
     x: velocities,
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const trace2 = {
     x: velocities,
     y: angles,
-    name: 'Optimaler Winkel alpha [Grad]',
+    name: 'Optimaler Winkel in Grad',
     yaxis: 'y2',
     mode: 'markers+lines',
     marker: { color: 'red', size: 8 },
@@ -87,11 +86,11 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const layout = {
-    title: 'Maximale Reichweite und Winkel',
+    title: 'Maximale Reichweite und Optimaler Winkel vs. Anfangsgeschwindigkeit',
     xaxis: { title: 'Anfangsgeschwindigkeit V [m/s]' },
     yaxis: { title: 'Maximale Reichweite [m]', side: 'left', showgrid: true },
     yaxis2: {
-      title: 'Optimaler Winkel alpha [Grad]',
+      title: 'Optimaler Winkel in Grad',
       overlaying: 'y',
       side: 'right',
       showgrid: false
@@ -101,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   Plotly.newPlot('scatter-plot', [trace1, trace2], layout);
 });
+
 
 
 // Numerische Lösung mit Luftwiderstand (Euler-Verfahren)
@@ -156,7 +156,7 @@ function findOptimalAngleEulerDt001(v) {
 
 
 function updateSummaryTableDt01() {
-  const velocities = [10, 20, 30, 40, 50];
+  const velocities = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
   const tbody = document.querySelector("#summary-table-dt01 tbody");
   if (!tbody) return;
   tbody.innerHTML = '';
