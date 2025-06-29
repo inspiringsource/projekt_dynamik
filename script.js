@@ -84,7 +84,7 @@ function computeNumericTrajectory(angle, v) {
   return { trajectory: traj, range: x };
 }
 
-// Suche optimalen Winkel für maximale Reichweite: Schrittweite 0.1°
+// Suche optimalen Winkel für maximale Reichweite: Schrittweite 0.1 Grad
 // Siehe: https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
 function findOptimalAngleEuler(v) {
   let maxRange = 0, optimalAngle = 45;
@@ -98,10 +98,10 @@ function findOptimalAngleEuler(v) {
   return { optimalAngle, maxRange };
 }
 
-// Fein: Schrittweite 0.0001°
+// Fein: Schrittweite 0.01 Grad
 function findOptimalAngleEulerFine(v) {
   let maxRange = 0, optimalAngle = 45;
-  for (let a = 30; a <= 50; a += 0.001) {
+  for (let a = 30; a <= 50; a += 0.01) {
     let result = computeNumericTrajectory(a, v);
     if (result.range > maxRange) {
       maxRange = result.range;
