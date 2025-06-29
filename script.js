@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const trace2 = {
     x: velocities,
     y: angles,
-    name: 'Optimaler Winkel alpha',
+    name: 'Optimaler Winkel alpha [Grad]',
     yaxis: 'y2',
     mode: 'markers+lines',
     marker: { color: 'red', size: 8 },
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     xaxis: { title: 'Anfangsgeschwindigkeit V [m/s]' },
     yaxis: { title: 'Maximale Reichweite [m]', side: 'left', showgrid: true },
     yaxis2: {
-      title: 'Optimaler Winkel alpha',
+      title: 'Optimaler Winkel alpha [Grad]',
       overlaying: 'y',
       side: 'right',
       showgrid: false
