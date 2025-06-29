@@ -66,7 +66,7 @@ function computeNumericTrajectory(angle, v) {
   const v0y = v * Math.sin(rad);
   let x = 0, y = launchHeight;
   let vx = v0x, vy = v0y;
-  let dt = 0.01;
+  let dt = 0.01; // Zeitschritt in Sekunden
   let traj = [];
   while (y >= 0 && x < 2000) {
     traj.push({x, y});
@@ -75,7 +75,7 @@ function computeNumericTrajectory(angle, v) {
     let Fdx = -Fd * (vx / speed);
     let Fdy = -Fd * (vy / speed);
     let ax = Fdx / mass;
-    let ay = (Fdy - mass * g) / mass;
+    let ay = (Fdy - mass * g) / mass; // Luftwiderstand und Schwerkraft
     vx += ax * dt;
     vy += ay * dt;
     x += vx * dt;
@@ -88,7 +88,7 @@ function computeNumericTrajectory(angle, v) {
 // Siehe: https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
 function findOptimalAngleEuler(v) {
   let maxRange = 0, optimalAngle = 45;
-  for (let a = 5; a <= 80; a += 0.1) {
+  for (let a = 30; a <= 50; a += 0.1) {
     let result = computeNumericTrajectory(a, v);
     if (result.range > maxRange) {
       maxRange = result.range;
@@ -101,7 +101,7 @@ function findOptimalAngleEuler(v) {
 // Fein: Schrittweite 0.0001°
 function findOptimalAngleEulerFine(v) {
   let maxRange = 0, optimalAngle = 45;
-  for (let a = 5; a <= 80; a += 0.01) {
+  for (let a = 30; a <= 50; a += 0.001) {
     let result = computeNumericTrajectory(a, v);
     if (result.range > maxRange) {
       maxRange = result.range;
