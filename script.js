@@ -32,6 +32,8 @@ function setup() {
 
   noLoop();
 
+  updateSummaryTableDt01();
+  updateSummaryTableDt001();
   updateSummaryTableCoarse();
   updateSummaryTableFine();
 }
@@ -52,6 +54,8 @@ function updateParams() {
 
   redraw();
 
+  updateSummaryTableDt01();
+  updateSummaryTableDt001();
   updateSummaryTableCoarse();
   updateSummaryTableFine();
 }
@@ -60,13 +64,12 @@ function updateParams() {
 
 // Numerische Lösung mit Luftwiderstand (Euler-Verfahren)
 // Siehe: https://en.wikipedia.org/wiki/Euler_method
-function computeNumericTrajectory(angle, v) {
+function computeNumericTrajectory(angle, v, dt = 0.01) {
   const rad = angle * Math.PI / 180;
   const v0x = v * Math.cos(rad);
   const v0y = v * Math.sin(rad);
   let x = 0, y = launchHeight;
   let vx = v0x, vy = v0y;
-  let dt = 0.01; // Zeitschritt in Sekunden
   let traj = [];
   while (y >= 0 && x < 2000) {
     traj.push({x, y});
@@ -83,6 +86,69 @@ function computeNumericTrajectory(angle, v) {
   }
   return { trajectory: traj, range: x };
 }
+
+// "Normal": dt = 0.01
+function findOptimalAngleEulerDt01(v) {
+  let maxRange = 0, optimalAngle = 45;
+  for (let a = 30; a <= 50; a += 0.1) {
+    let result = computeNumericTrajectory(a, v, 0.01);
+    if (result.range > maxRange) {
+      maxRange = result.range;
+      optimalAngle = a;
+    }
+  }
+  return { optimalAngle, maxRange };
+}
+
+// "Feinabstimmung (fine)": dt = 0.001
+function findOptimalAngleEulerDt001(v) {
+  let maxRange = 0, optimalAngle = 45;
+  for (let a = 30; a <= 50; a += 0.1) {
+    let result = computeNumericTrajectory(a, v, 0.001);
+    if (result.range > maxRange) {
+      maxRange = result.range;
+      optimalAngle = a;
+    }
+  }
+  return { optimalAngle, maxRange };
+}
+
+
+function updateSummaryTableDt01() {
+  const velocities = [10, 20, 30, 40, 50];
+  const tbody = document.querySelector("#summary-table-dt01 tbody");
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  velocities.forEach(v => {
+    const { optimalAngle, maxRange } = findOptimalAngleEulerDt01(v);
+    tbody.innerHTML += `
+      <tr>
+        <td>${v}</td>
+        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${maxRange.toFixed(2)} m</td>
+      </tr>
+    `;
+  });
+}
+
+function updateSummaryTableDt001() {
+  const velocities = [10, 20, 30, 40, 50];
+  const tbody = document.querySelector("#summary-table-dt001 tbody");
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  velocities.forEach(v => {
+    const { optimalAngle, maxRange } = findOptimalAngleEulerDt001(v);
+    tbody.innerHTML += `
+      <tr>
+        <td>${v}</td>
+        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${maxRange.toFixed(2)} m</td>
+      </tr>
+    `;
+  });
+}
+
+
 
 // Suche optimalen Winkel für maximale Reichweite: Schrittweite 0.1 Grad
 // Siehe: https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
