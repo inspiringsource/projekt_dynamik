@@ -30,18 +30,29 @@
           https://www.codiga.io/blog/display-code-snippets-in-html/
           -->
     <div>
-      <h3>Optimale Winkel und Reichweiten für verschiedene Anfangsgeschwindigkeiten</h3>
-      <table id="summary-table" border="1" style="border-collapse: collapse; min-width: 400px; text-align: center;">
-        <thead> 
-          <tr style="background-color: #f2f2f2;">
+
+      <h3>Optimale Winkel und Reichweiten (Schrittweite: 0.1 Grad)</h3>
+      <table id="summary-table-coarse" border="1" style="border-collapse: collapse; min-width: 400px; text-align: center;">
+        <thead>
+          <tr>
             <th>V [m/s]</th>
             <th>alpha [Grad]</th>
             <th>maximale Reichweite [m]</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- JS will insert rows here -->
-        </tbody>
+        <tbody></tbody>
+      </table>
+
+      <h3>Optimale Winkel und Reichweiten (Schrittweite: 0.01 Grad)</h3>
+      <table id="summary-table-fine" border="1" style="border-collapse: collapse; min-width: 400px; text-align: center;">
+        <thead>
+          <tr>
+            <th>V [m/s]</th>
+            <th>alpha [Grad]</th>
+            <th>maximale Reichweite [m]</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
       </table>
 
       <label for="angleInput">Abwurfwinkel in Grad:</label><br />
@@ -63,8 +74,7 @@
     </p>
     <!-- TODO: -->
     <!-- Ändere die Werte so, dass sie als INT statt als Float-Werte angezeigt werden -->
-    <table id="result-table" border="1" style="border-collapse: collapse; min-width: 400px;">
-      <table id="result-table" border="1" style="border-collapse: collapse; min-width: 400px; text-align: center;">
+    <table id="result-table" border="1" style="border-collapse: collapse; min-width: 400px; text-align: center;">
         <thead>
           <tr>
 

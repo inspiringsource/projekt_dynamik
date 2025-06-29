@@ -31,12 +31,16 @@ function setup() {
   velocityInput.addEventListener('change', updateParams);
 
   noLoop();
+
+  updateSummaryTableCoarse();
+  updateSummaryTableFine();
 }
+
 
 function updateParams() {
   let valAngle = Number(angleInput.value);
   if (valAngle < 5) valAngle = 5;
-  if (valAngle > 89) valAngle = 89;
+  if (valAngle > 80) valAngle = 80;
   angleDeg = valAngle;
   angleInput.value = valAngle;
 
@@ -47,6 +51,9 @@ function updateParams() {
   velocityInput.value = valVel;
 
   redraw();
+
+  updateSummaryTableCoarse();
+  updateSummaryTableFine();
 }
 
 
@@ -77,11 +84,11 @@ function computeNumericTrajectory(angle, v) {
   return { trajectory: traj, range: x };
 }
 
-// Suche optimalen Winkel für maximale Reichweite (mit Luftwiderstand)
+// Suche optimalen Winkel für maximale Reichweite: Schrittweite 0.1°
 // Siehe: https://stackoverflow.com/questions/68731306/how-to-find-optimal-projectile-angle-with-air-resistance
 function findOptimalAngleEuler(v) {
   let maxRange = 0, optimalAngle = 45;
-  for (let a = 5; a <= 89; a += 0.1) {
+  for (let a = 5; a <= 80; a += 0.1) {
     let result = computeNumericTrajectory(a, v);
     if (result.range > maxRange) {
       maxRange = result.range;
@@ -90,6 +97,20 @@ function findOptimalAngleEuler(v) {
   }
   return { optimalAngle, maxRange };
 }
+
+// Fein: Schrittweite 0.0001°
+function findOptimalAngleEulerFine(v) {
+  let maxRange = 0, optimalAngle = 45;
+  for (let a = 5; a <= 80; a += 0.01) {
+    let result = computeNumericTrajectory(a, v);
+    if (result.range > maxRange) {
+      maxRange = result.range;
+      optimalAngle = a;
+    }
+  }
+  return { optimalAngle, maxRange };
+}
+
 
 // Pfad auf das Canvas zeichnen (gemeinsame Skalierung)
 // Quelle für Skalierung: https://stackoverflow.com/questions/23104582/scaling-an-image-to-fit-on-canvas
@@ -140,23 +161,41 @@ function updateResultTable() {
   });
 }
 
-function updateSummaryTable() {
+
+function updateSummaryTableCoarse() {
   const velocities = [10, 20, 30, 40, 50];
-  const tbody = document.querySelector("#summary-table tbody");
+  const tbody = document.querySelector("#summary-table-coarse tbody");
   if (!tbody) return;
   tbody.innerHTML = '';
-
   velocities.forEach(v => {
     const { optimalAngle, maxRange } = findOptimalAngleEuler(v);
     tbody.innerHTML += `
       <tr>
-        <td>${v.toFixed(0)}</td>
-        <td>${optimalAngle.toFixed(2)}°</td>
+        <td>${v}</td>
+        <td>${optimalAngle.toFixed(4)}°</td>
         <td>${maxRange.toFixed(2)} m</td>
       </tr>
     `;
   });
 }
+
+function updateSummaryTableFine() {
+  const velocities = [10, 20, 30, 40, 50];
+  const tbody = document.querySelector("#summary-table-fine tbody");
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  velocities.forEach(v => {
+    const { optimalAngle, maxRange } = findOptimalAngleEulerFine(v);
+    tbody.innerHTML += `
+      <tr>
+        <td>${v}</td>
+        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${maxRange.toFixed(2)} m</td>
+      </tr>
+    `;
+  });
+}
+
 
 
 function draw() {
@@ -224,5 +263,5 @@ function draw() {
     maxRange: optMaxRange
   };
   updateResultTable();
-  updateSummaryTable(); 
+
 }
