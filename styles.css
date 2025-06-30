@@ -1,0 +1,7 @@
+/* https://stackoverflow.com/questions/14073188/center-align-a-html-table */
+table {
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse; 
+    text-align: center;
+}
