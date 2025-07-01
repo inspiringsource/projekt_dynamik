@@ -228,9 +228,8 @@ function drawPath(trajectory, col, maxRange, maxHeight) {
   textSize(14);
   textAlign(RIGHT, BOTTOM);
   text("Reichweite [m]", width - 10, height - 5);
-  textAlign(LEFT, TOP);
-  text("____", 2, 280); 
-  text("    2.5 [m]", 20, 295); 
+  textAlign(LEFT, TOP); 
+  text("    2.5 [m]", 20, 315); 
   trajectory.forEach(({x, y}) => {
     let xScale = (width - 40) / (maxRange || 1);
     let yScale = (height - 40) / (maxHeight + 1e-6);
