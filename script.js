@@ -165,7 +165,7 @@ function updateSummaryTableDt01() {
     tbody.innerHTML += `
       <tr>
         <td>${v}</td>
-        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${optimalAngle.toFixed(2)}°</td>
         <td>${maxRange.toFixed(2)} m</td>
       </tr>
     `;
@@ -182,7 +182,7 @@ function updateSummaryTableDt001() {
     tbody.innerHTML += `
       <tr>
         <td>${v}</td>
-        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${optimalAngle.toFixed(2)}°</td>
         <td>${maxRange.toFixed(2)} m</td>
       </tr>
     `;
@@ -279,7 +279,7 @@ function updateSummaryTableCoarse() {
     tbody.innerHTML += `
       <tr>
         <td>${v}</td>
-        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${optimalAngle.toFixed(2)}°</td>
         <td>${maxRange.toFixed(2)} m</td>
       </tr>
     `;
@@ -296,7 +296,7 @@ function updateSummaryTableFine() {
     tbody.innerHTML += `
       <tr>
         <td>${v}</td>
-        <td>${optimalAngle.toFixed(4)}°</td>
+        <td>${optimalAngle.toFixed(2)}°</td>
         <td>${maxRange.toFixed(2)} m</td>
       </tr>
     `;
